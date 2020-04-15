@@ -9,8 +9,6 @@ import com.cgpanda.easyinvest.Entity.Story;
 import com.cgpanda.easyinvest.WebServices.StoriesApi;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,18 +36,16 @@ public class StoriesRepository {
     }
 
     public MutableLiveData<List<Story>> getStories(){
-
-
         final MutableLiveData<List<Story>> data = new MutableLiveData<>();
         Call<List<Story>> stories = storiesApi.getAllStories();
         stories.enqueue(new Callback<List<Story>>() {
             @Override
             public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
-                    storyList.addAll(response.body());
-                    data.setValue(storyList);
-                    Log.d(TAG, "onResponse: Success");
+                storyList.clear();
+                storyList.addAll(response.body());
+                data.setValue(storyList);
+                Log.d(TAG, "onResponse: Success");
             }
-
             @Override
             public void onFailure(Call<List<Story>> call, Throwable t) {
                 Log.d(TAG, "onFailure: Fail");
@@ -71,7 +67,6 @@ public class StoriesRepository {
                 data.setValue(episodeList);
                 Log.d(TAG, "onResponse: Success");
             }
-
             @Override
             public void onFailure(Call<List<Episode>> call, Throwable t) {
                 Log.d(TAG, "onFailure: Fail");
@@ -81,7 +76,6 @@ public class StoriesRepository {
     }
 
     static class MyComparator implements Comparator<Episode> {
-
         @Override
         public int compare(Episode o1, Episode o2) {
             return Long.compare(o1.getId(), o2.getId());

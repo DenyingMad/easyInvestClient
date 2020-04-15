@@ -2,7 +2,6 @@ package com.cgpanda.easyinvest.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,11 +11,10 @@ import android.os.Bundle;
 import com.cgpanda.easyinvest.Adapters.EpisodeAdapter;
 import com.cgpanda.easyinvest.Entity.Episode;
 import com.cgpanda.easyinvest.R;
-import com.cgpanda.easyinvest.ViewModel.StoryViewModel;
+import com.cgpanda.easyinvest.ViewModel.EpisodeViewModel;
+import com.cgpanda.easyinvest.ViewModel.MainActivityViewModel;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.lang.Comparable;
 import java.util.List;
 
 public class EpisodeActivity extends AppCompatActivity {
@@ -25,7 +23,7 @@ public class EpisodeActivity extends AppCompatActivity {
     private EpisodeAdapter adapter;
     private List<Episode> episodeList = new ArrayList<>();
 
-    private StoryViewModel viewModel;
+    private EpisodeViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +31,13 @@ public class EpisodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_episode);
         Intent intent = getIntent();
         String selectedStory = intent.getStringExtra("story");
-        viewModel = ViewModelProviders.of(this).get(StoryViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(EpisodeViewModel.class);
         viewModel.init();
-        viewModel.getEpisodes(selectedStory).observe(this, new Observer<List<Episode>>() {
-            @Override
-            public void onChanged(List<Episode> episodes) {
-                episodeList.clear();
-                episodeList.addAll(episodes);
-
-
-                adapter.notifyDataSetChanged();
-            }
+        viewModel.getEpisodes(selectedStory).observe(this, episodes -> {
+            episodeList.clear();
+            episodeList.addAll(episodes);
+            adapter.notifyDataSetChanged();
         });
-
         initViewPager();
     }
 

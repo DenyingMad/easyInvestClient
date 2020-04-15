@@ -8,28 +8,27 @@ import com.cgpanda.easyinvest.Entity.Episode;
 import com.cgpanda.easyinvest.Entity.Story;
 import com.cgpanda.easyinvest.Repository.StoriesRepository;
 
-import java.util.Comparator;
 import java.util.List;
 
-public class StoryViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel {
     private MutableLiveData<List<Story>> stories;
-    private MutableLiveData<List<Episode>> episodes;
     private StoriesRepository storiesRepository;
+
     public void init(){
         if (stories != null)
             return;
         storiesRepository = StoriesRepository.getInstance();
-        stories = storiesRepository.getStories();
-
     }
+
+    //TODO загружать только несколько(7) историй для отображения на главном экране
     public LiveData<List<Story>> getStories(){
+        if(stories == null){
+            stories = new MutableLiveData<>();
+            stories = storiesRepository.getStories();
+        }
         return stories;
     }
 
-    public LiveData<List<Episode>> getEpisodes(String id){
-        episodes = storiesRepository.getEpisodes(id);
 
-        return episodes;
-    }
 
 }

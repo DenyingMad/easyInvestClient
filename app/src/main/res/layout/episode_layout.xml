@@ -19,7 +19,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background"
-                android:foregroundTint="@color/cardview_shadow_start_color"/>
+                android:foreground="@drawable/gradient"/>
             <TextView
                 android:id="@+id/episode_text"
                 android:layout_width="wrap_content"

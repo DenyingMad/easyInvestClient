@@ -7,6 +7,12 @@ import java.util.List;
 
 public class Story {
 
+    public Story(long story_id, String title, String imageUrl) {
+        this.story_id = story_id;
+        this.title = title;
+        this.imageUrl = imageUrl;
+    }
+
     @SerializedName("story_id")
     @Expose
     private long story_id;
