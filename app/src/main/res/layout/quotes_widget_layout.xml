@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:layout_toStartOf="@+id/graph"
+            android:layout_toStartOf="@+id/graph_block_vs"
             android:maxLines="1"
             android:text="AMZN"
             android:textSize="18sp"
@@ -25,21 +25,35 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/short_name"
             android:layout_marginEnd="5dp"
-            android:layout_toStartOf="@+id/graph"
+            android:layout_toStartOf="@+id/graph_block_vs"
             android:ellipsize="end"
             android:singleLine="true"
             android:scrollHorizontally="true"
             android:text="Amazon Inc"
             android:textSize="14sp"
             android:gravity="start"/>
-        <ImageView
-            android:id="@+id/graph"
-            android:layout_width="46dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_alignParentRight="true"
+
+        <ViewSwitcher
+            android:id="@+id/graph_block_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:scaleType="centerCrop"/>
+            >
+            <TextView
+                android:id="@+id/dynamic_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="893rub"
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"/>
+            <ImageView
+                android:id="@+id/graph"
+                android:layout_width="46dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop"/>
+        </ViewSwitcher>
     </RelativeLayout>
 
 

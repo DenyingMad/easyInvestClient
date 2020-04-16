@@ -52,7 +52,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return storyList.size();
+        return 4;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

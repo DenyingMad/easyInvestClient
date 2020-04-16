@@ -34,8 +34,6 @@ public class ArchiveActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archive);
-        //TODO подгрузка из LiveData
-
         viewModel = ViewModelProviders.of(this).get(ArchiveViewModel.class);
         viewModel.init();
         LiveData<List<Story>> data = viewModel.getStories();
