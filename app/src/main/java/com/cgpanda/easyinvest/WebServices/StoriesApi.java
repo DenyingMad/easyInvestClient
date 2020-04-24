@@ -10,6 +10,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface StoriesApi {
+
+    @GET("stories/featured")
+    Call<List<Story>> getFeaturedStories();
+
     @GET("stories")
     Call<List<Story>> getAllStories();
 

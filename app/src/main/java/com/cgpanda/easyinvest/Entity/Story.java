@@ -32,6 +32,18 @@ public class Story {
     @Expose
     private List<Episode> episodeList;
 
+    @SerializedName("categories")
+    @Expose
+    private List<Category> categoryList;
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
+    }
+
     public List<Episode> getEpisodeList() {
         return episodeList;
     }

@@ -117,4 +117,6 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder
 //
 //        }
 //    }
+
+
 }

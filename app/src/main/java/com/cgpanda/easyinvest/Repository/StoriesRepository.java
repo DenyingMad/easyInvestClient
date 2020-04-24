@@ -35,6 +35,27 @@ public class StoriesRepository {
         return instance;
     }
 
+    public MutableLiveData<List<Story>> getFeaturedStories(){
+        final MutableLiveData<List<Story>> data = new MutableLiveData<>();
+        Call<List<Story>> stories = storiesApi.getFeaturedStories();
+        stories.enqueue(new Callback<List<Story>>() {
+            @Override
+            public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
+                storyList.clear();
+                storyList.addAll(response.body());
+                data.setValue(storyList);
+                Log.d(TAG, "onResponse: success featured stories load");
+            }
+
+            @Override
+            public void onFailure(Call<List<Story>> call, Throwable t) {
+                //TODO if null
+                Log.d(TAG, "onFailure: featured stories load fail");
+            }
+        });
+        return data;
+    }
+
     public MutableLiveData<List<Story>> getStories(){
         final MutableLiveData<List<Story>> data = new MutableLiveData<>();
         Call<List<Story>> stories = storiesApi.getAllStories();

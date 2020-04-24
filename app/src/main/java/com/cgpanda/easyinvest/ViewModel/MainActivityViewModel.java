@@ -32,10 +32,17 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     //TODO загружать только несколько(7) историй для отображения на главном экране
+//    public LiveData<List<Story>> getStories(){
+//        if(stories == null){
+//            stories = new MutableLiveData<>();
+//            stories = storiesRepository.getStories();
+//        }
+//        return stories;
+//    }
+
     public LiveData<List<Story>> getStories(){
         if(stories == null){
-            stories = new MutableLiveData<>();
-            stories = storiesRepository.getStories();
+            stories = storiesRepository.getFeaturedStories();
         }
         return stories;
     }

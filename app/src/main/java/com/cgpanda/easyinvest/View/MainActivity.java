@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         storyList.add(new Story(0, "", ""));
         storyList.add(new Story(0, "", ""));
         storyList.add(new Story(0, "", ""));
+        storyList.add(new Story(0, "", ""));
+        storyList.add(new Story(0, "", ""));
 
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         data.observe(this, stories -> {
             storyList.clear();
             storyList.addAll(stories);
+            storyList.add(new Story(-1, "Больше историй", "https://cdn.pixabay.com/photo/2014/05/25/22/31/icon-354006_960_720.png"));
             storyAdapter.notifyDataSetChanged();
         });
         initStoryRecyclerView();
@@ -90,11 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void goToArchive(View v){
-        Intent intent = new Intent(this, ArchiveActivity.class);
-        startActivity(intent);
-    }
-
 
     private void initStoryRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.story_recycler_view);
@@ -118,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         quotesAdapter = new QuotesAdapter(this, equityList);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.hasFixedSize();
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(quotesAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
@@ -128,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         newsAdapter = new NewsAdapter(this, newsList);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.hasFixedSize();
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(newsAdapter);
     }
 

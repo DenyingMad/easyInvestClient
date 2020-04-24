@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cgpanda.easyinvest.Entity.Story;
 import com.cgpanda.easyinvest.R;
+import com.cgpanda.easyinvest.View.ArchiveActivity;
 import com.cgpanda.easyinvest.View.EpisodeActivity;
 
 import java.util.List;
@@ -41,18 +42,25 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        RequestOptions options = new RequestOptions().placeholder(R.drawable.ic_launcher_foreground);
-        Glide.with(context)
-                .load(storyList.get(position).getImageUrl())
-                .apply(options)
-                .into(holder.imageView);
-        holder.textView.setText(storyList.get(position).getTitle());
-
+        if (position != 4) {
+            RequestOptions options = new RequestOptions().placeholder(R.drawable.ic_launcher_foreground);
+            Glide.with(context)
+                    .load(storyList.get(position).getImageUrl())
+                    .apply(options)
+                    .into(holder.imageView);
+            holder.textView.setText(storyList.get(position).getTitle());
+        }
+        else{
+            Glide.with(context)
+                    .load(storyList.get(position).getImageUrl())
+                    .into(holder.imageView);
+            holder.textView.setText(storyList.get(position).getTitle());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -69,9 +77,14 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    Intent i = new Intent(context, EpisodeActivity.class);
-                    i.putExtra("story", storyList.get(position).getStory_id() + "");
-                    context.startActivity(i);
+                    if (position != 4) {
+                        Intent i = new Intent(context, EpisodeActivity.class);
+                        i.putExtra("story", storyList.get(position).getStory_id() + "");
+                        context.startActivity(i);
+                    }else{
+                        Intent i = new Intent(context, ArchiveActivity.class);
+                        context.startActivity(i);
+                    }
                 }
             });
 
