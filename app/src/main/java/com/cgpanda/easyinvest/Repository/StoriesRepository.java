@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.cgpanda.easyinvest.Entity.Category;
 import com.cgpanda.easyinvest.Entity.Episode;
 import com.cgpanda.easyinvest.Entity.Story;
 import com.cgpanda.easyinvest.WebServices.StoriesApi;
@@ -20,7 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StoriesRepository {
     private static StoriesRepository instance;
-    private ArrayList<Story> storyList = new ArrayList<>();
     private ArrayList<Episode> episodeList = new ArrayList<>();
     private static final String TAG = "StoriesRepository";
     private Retrofit retrofit = new Retrofit.Builder()
@@ -41,9 +41,7 @@ public class StoriesRepository {
         stories.enqueue(new Callback<List<Story>>() {
             @Override
             public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
-                storyList.clear();
-                storyList.addAll(response.body());
-                data.setValue(storyList);
+                data.setValue(response.body());
                 Log.d(TAG, "onResponse: success featured stories load");
             }
 
@@ -51,25 +49,6 @@ public class StoriesRepository {
             public void onFailure(Call<List<Story>> call, Throwable t) {
                 //TODO if null
                 Log.d(TAG, "onFailure: featured stories load fail");
-            }
-        });
-        return data;
-    }
-
-    public MutableLiveData<List<Story>> getStories(){
-        final MutableLiveData<List<Story>> data = new MutableLiveData<>();
-        Call<List<Story>> stories = storiesApi.getAllStories();
-        stories.enqueue(new Callback<List<Story>>() {
-            @Override
-            public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
-                storyList.clear();
-                storyList.addAll(response.body());
-                data.setValue(storyList);
-                Log.d(TAG, "onResponse: Success");
-            }
-            @Override
-            public void onFailure(Call<List<Story>> call, Throwable t) {
-                Log.d(TAG, "onFailure: Fail");
             }
         });
         return data;
@@ -91,6 +70,42 @@ public class StoriesRepository {
             @Override
             public void onFailure(Call<List<Episode>> call, Throwable t) {
                 Log.d(TAG, "onFailure: Fail");
+            }
+        });
+        return data;
+    }
+
+    public MutableLiveData<List<Category>> getAllCategories(){
+        final MutableLiveData<List<Category>> data = new MutableLiveData<>();
+        Call<List<Category>> call = storiesApi.getAllCategories();
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                Log.d(TAG, "onResponse: success get all categories");
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Log.d(TAG, "onFailure: failed get all categories");
+            }
+        });
+        return data;
+    }
+
+    public MutableLiveData<List<Category>> getCategories(){
+        final MutableLiveData<List<Category>> data = new MutableLiveData<>();
+        Call<List<Category>> call = storiesApi.getCategories();
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                Log.d(TAG, "onResponse: success get only 3 categories");
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Log.d(TAG, "onFailure: failed get only 3 categories");
             }
         });
         return data;

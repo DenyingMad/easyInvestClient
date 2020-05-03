@@ -4,6 +4,8 @@ package com.cgpanda.easyinvest.Entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Category {
 
     @SerializedName("id")
@@ -13,6 +15,24 @@ public class Category {
     @SerializedName("categoryName")
     @Expose
     private String categoryName;
+
+    @SerializedName("stories")
+    @Expose
+    private List<Story> storyList;
+
+    public Category(long id, String categoryName, List<Story> storyList) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.storyList = storyList;
+    }
+
+    public List<Story> getStoryList() {
+        return storyList;
+    }
+
+    public void setStoryList(List<Story> storyList) {
+        this.storyList = storyList;
+    }
 
     public long getId() {
         return id;

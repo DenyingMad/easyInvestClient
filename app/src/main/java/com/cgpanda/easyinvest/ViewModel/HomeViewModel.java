@@ -14,7 +14,7 @@ import com.cgpanda.easyinvest.Repository.StoriesRepository;
 
 import java.util.List;
 
-public class MainActivityViewModel extends ViewModel {
+public class HomeViewModel extends ViewModel {
     private MutableLiveData<List<Story>> stories;
     private MutableLiveData<List<Equity>> equities;
     private MutableLiveData<List<News>> news;
@@ -24,23 +24,14 @@ public class MainActivityViewModel extends ViewModel {
     private NewsRepository newsRepository;
 
     public void init(){
-        if (stories != null && equities != null)
+        if (stories != null && equities != null && news != null)
             return;
         storiesRepository = StoriesRepository.getInstance();
         equityRepository = EquityRepository.getInstance();
         newsRepository = NewsRepository.getInstance();
     }
 
-    //TODO загружать только несколько(7) историй для отображения на главном экране
-//    public LiveData<List<Story>> getStories(){
-//        if(stories == null){
-//            stories = new MutableLiveData<>();
-//            stories = storiesRepository.getStories();
-//        }
-//        return stories;
-//    }
-
-    public LiveData<List<Story>> getStories(){
+    public LiveData<List<Story>> getFeaturedStories(){
         if(stories == null){
             stories = storiesRepository.getFeaturedStories();
         }

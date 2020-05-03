@@ -4,25 +4,33 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cgpanda.easyinvest.Entity.Category;
 import com.cgpanda.easyinvest.Entity.Story;
 import com.cgpanda.easyinvest.Repository.StoriesRepository;
 
 import java.util.List;
 
 public class ArchiveViewModel extends ViewModel {
-    private MutableLiveData<List<Story>> stories;
+    private MutableLiveData<List<Category>> limitedCategories;
+    private MutableLiveData<List<Category>> categories;
     private StoriesRepository storiesRepository;
     public void init(){
-        if (stories != null)
+        if (categories != null)
             return;
         storiesRepository = StoriesRepository.getInstance();
     }
-    public LiveData<List<Story>> getStories(){
-        if(stories == null){
-            stories = new MutableLiveData<>();
-            stories = storiesRepository.getStories();
+
+    public LiveData<List<Category>> getAllCategories(){
+        if (categories == null){
+            categories = storiesRepository.getAllCategories();
         }
-        return stories;
+        return categories;
+    }
+
+    public LiveData<List<Category>> getCategories(){
+        if (limitedCategories == null)
+            limitedCategories = storiesRepository.getCategories();
+        return limitedCategories;
     }
 
 }

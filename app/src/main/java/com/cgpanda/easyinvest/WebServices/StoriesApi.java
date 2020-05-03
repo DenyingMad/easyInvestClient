@@ -1,5 +1,6 @@
 package com.cgpanda.easyinvest.WebServices;
 
+import com.cgpanda.easyinvest.Entity.Category;
 import com.cgpanda.easyinvest.Entity.Episode;
 import com.cgpanda.easyinvest.Entity.Story;
 
@@ -14,9 +15,12 @@ public interface StoriesApi {
     @GET("stories/featured")
     Call<List<Story>> getFeaturedStories();
 
-    @GET("stories")
-    Call<List<Story>> getAllStories();
+    @GET("stories/categories")
+    Call<List<Category>> getAllCategories();
 
-    @GET("episodes/{id}")
+    @GET("stories/episodes/{id}")
     Call<List<Episode>> getEpisodesById(@Path("id") String id);
+
+    @GET("stories/categories/limited")
+    Call<List<Category>> getCategories();
 }

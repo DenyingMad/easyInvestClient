@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home"/>
+    <item
+        android:id="@+id/news"
+        android:icon="@drawable/ic_public_black_24dp"
+        android:title="News"/>
+    <item
+        android:id="@+id/equities"
+        android:icon="@drawable/ic_insert_chart_black_24dp"
+        android:title="Equities"/>
+    <item
+        android:id="@+id/stories"
+        android:icon="@drawable/ic_history_black_24dp"
+        android:title="Stories"/>
+
+</menu>

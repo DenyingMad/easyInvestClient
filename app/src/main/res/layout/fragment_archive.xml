@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".View.Fragments.ArchiveFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/color_gradient">
+            <TextView
+                android:id="@+id/quote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="“Anyone who stops learning is old.”"
+                android:textSize="22sp"
+                android:maxLines="4"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/quote_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Henry Ford"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_below="@id/quote"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"/>
+        </RelativeLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            app:cardCornerRadius="20dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/go_to_archive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Перейти к списку историй"
+                    android:layout_margin="20dp"
+                    android:textSize="22sp"
+                    android:textColor="#000" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_trending_flat_black_24dp"
+                    android:background="@android:color/transparent"
+                    android:layout_toEndOf="@id/go_to_archive"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/blog_articles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"/>
+
+
+    </LinearLayout>
+</ScrollView>

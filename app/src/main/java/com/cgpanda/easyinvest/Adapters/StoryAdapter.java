@@ -41,26 +41,18 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        if (position != 4) {
-            RequestOptions options = new RequestOptions().placeholder(R.drawable.ic_launcher_foreground);
-            Glide.with(context)
-                    .load(storyList.get(position).getImageUrl())
-                    .apply(options)
-                    .into(holder.imageView);
-            holder.textView.setText(storyList.get(position).getTitle());
-        }
-        else{
-            Glide.with(context)
-                    .load(storyList.get(position).getImageUrl())
-                    .into(holder.imageView);
-            holder.textView.setText(storyList.get(position).getTitle());
-        }
+        //TODO сделать последнюю историю кнопкой больше на сервере
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.ic_launcher_foreground);
+        Glide.with(context)
+                .load(storyList.get(position).getImageUrl())
+                .apply(options)
+                .into(holder.imageView);
+        holder.textView.setText(storyList.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return storyList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -77,11 +69,11 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if (position != 4) {
+                    if (storyList.get(position).getStory_id() != -1) {
                         Intent i = new Intent(context, EpisodeActivity.class);
                         i.putExtra("story", storyList.get(position).getStory_id() + "");
                         context.startActivity(i);
-                    }else{
+                    } else{
                         Intent i = new Intent(context, ArchiveActivity.class);
                         context.startActivity(i);
                     }
