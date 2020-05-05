@@ -17,16 +17,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.cgpanda.easyinvest.Adapters.BlogAdapter;
 import com.cgpanda.easyinvest.Entity.Article;
+import com.cgpanda.easyinvest.Entity.Quote;
 import com.cgpanda.easyinvest.R;
 import com.cgpanda.easyinvest.View.ArchiveActivity;
 import com.cgpanda.easyinvest.ViewModel.BlogViewModel;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +42,14 @@ public class ArchiveFragment extends Fragment {
     private BlogAdapter adapter;
     private List<Article> articleList = new ArrayList<>();
     private BlogViewModel viewModel;
-    private int articleSort = 0;
-    private int pageNumber;
+    private int articleSort;
+    private int pageNumber = 0;
     private ProgressBar progressBar;
     private CardView goToArchiveCV;
     private RelativeLayout quoteLayout;
+    private Spinner selectSort;
+    private Boolean isFirstLoad = true;
+    TextView quoteText, quoteAuthor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,15 +61,16 @@ public class ArchiveFragment extends Fragment {
             articleList.addAll(articles);
             adapter.notifyDataSetChanged();
         });
-        viewModel.getIsLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean)
-                    showProgressBar();
-                else{
-                    hideProgressBar();
-                }
+        viewModel.getIsLoading().observe(this, aBoolean -> {
+            if(aBoolean)
+                showProgressBar();
+            else{
+                hideProgressBar();
             }
+        });
+        viewModel.getQuote().observe(this, quote -> {
+            quoteText.setText(quote.getText());
+            quoteAuthor.setText(quote.getAuthor());
         });
     }
 
@@ -77,15 +85,47 @@ public class ArchiveFragment extends Fragment {
         progressBar = getView().findViewById(R.id.progressBar);
         goToArchiveCV = getView().findViewById(R.id.go_to_archive_card);
         quoteLayout = getView().findViewById(R.id.quote_layout);
-        pageNumber = 0;
-        initBlogRecyclerView();
-        adapter.setOnBottomReachedListener(position -> {
-            Log.d(TAG, "onBottomReached: end of list: " + pageNumber);
-            //TODO загрузка данных с сервера
-            viewModel.getNewArticles(pageNumber + 1, articleSort);
-            pageNumber++;
+        selectSort = getView().findViewById(R.id.spinner);
+        quoteText = getView().findViewById(R.id.quote_text);
+        quoteAuthor = getView().findViewById(R.id.quote_author);
+
+        // Слушаем изменения способа сортировки статей
+        selectSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemSelected: " + parent.getItemAtPosition(position).toString());
+                // Определение выбранной сортировки:
+                // 0 - сотрировка по актуальности;
+                // 1 - по дате, начиная с новых;
+                // -1 - под дате, начиная со старых
+                switch (position){
+                    case 0:
+                        articleSort = 0;
+                        break;
+                    case 1:
+                        articleSort = 1;
+                        break;
+                    case 2:
+                        articleSort = -1;
+                        break;
+                }
+
+                // При первом открытии страницы блога мы подписываемся на изменение списка статей,
+                // поэтому нужно избежать вызова тех же самых данных отсюда
+                if (!isFirstLoad) {
+                    pageNumber = -1;
+                    loadNewArticles();
+                }
+                isFirstLoad = false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
-        onGoToArchive();
+        initBlogRecyclerView();
+        onGoToArchive(); // Кнопка перехода к списку всех статей
     }
 
     @Override
@@ -108,25 +148,33 @@ public class ArchiveFragment extends Fragment {
     }
 
     private void initBlogRecyclerView(){
-        adapter = new BlogAdapter(getContext(), articleList);
         RecyclerView recyclerView = getView().findViewById(R.id.blog_articles_rv);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new BlogAdapter(getContext(), articleList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 outRect.top = 0;
                 outRect.bottom = 50;
-                if (parent.getChildAdapterPosition(view) == 0){
+                if (parent.getChildAdapterPosition(view) == 0)
                     outRect.top = 50;
-                }
             }
         });
-        recyclerView.setAdapter(adapter);
+        setRecyclerViewListeners(recyclerView);
+    }
+
+    private void setRecyclerViewListeners(RecyclerView recyclerView){
+        adapter.setOnBottomReachedListener(position -> {
+
+            loadNewArticles();
+            Log.d(TAG, "onBottomReached: end of list: " + pageNumber);
+        });
         recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                //Log.d(TAG, "onFling: velocityX: " + velocityX + " velocityY: " + velocityY);
                 if (velocityY > 4000){
                     goToArchiveCV.setVisibility(View.GONE);
                     quoteLayout.setVisibility(View.GONE);
@@ -146,6 +194,9 @@ public class ArchiveFragment extends Fragment {
         });
     }
 
-
+    private void loadNewArticles(){
+        pageNumber++;
+        viewModel.getNewArticles(pageNumber, articleSort);
+    }
 
 }

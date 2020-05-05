@@ -1,6 +1,7 @@
 package com.cgpanda.easyinvest.WebServices;
 
 import com.cgpanda.easyinvest.Entity.Article;
+import com.cgpanda.easyinvest.Entity.Quote;
 
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface BlogApi {
 
     @GET("blog/articles")
     Call<List<Article>> getArticles(@Query("page") int page, @Query("sort") int sort);
+
+    @GET("blog/random-quote")
+    Call<Quote> getRandomQuote();
 }

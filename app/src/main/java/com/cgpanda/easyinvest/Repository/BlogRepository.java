@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cgpanda.easyinvest.Entity.Article;
+import com.cgpanda.easyinvest.Entity.Quote;
 import com.cgpanda.easyinvest.WebServices.BlogApi;
 
 import java.util.List;
@@ -32,6 +33,23 @@ public class BlogRepository {
             instance = new BlogRepository();
         }
         return instance;
+    }
+
+    public MutableLiveData<Quote> getQuote(){
+        final MutableLiveData<Quote> data = new MutableLiveData<>();
+        Call<Quote> call = blogApi.getRandomQuote();
+        call.enqueue(new Callback<Quote>() {
+            @Override
+            public void onResponse(Call<Quote> call, Response<Quote> response) {
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Quote> call, Throwable t) {
+
+            }
+        });
+        return data;
     }
 
     public MutableLiveData<List<Article>> getArticles(int page, int sort){
