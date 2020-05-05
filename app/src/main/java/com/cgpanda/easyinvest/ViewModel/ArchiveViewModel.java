@@ -11,7 +11,6 @@ import com.cgpanda.easyinvest.Repository.StoriesRepository;
 import java.util.List;
 
 public class ArchiveViewModel extends ViewModel {
-    private MutableLiveData<List<Category>> limitedCategories;
     private MutableLiveData<List<Category>> categories;
     private StoriesRepository storiesRepository;
     public void init(){
@@ -26,11 +25,4 @@ public class ArchiveViewModel extends ViewModel {
         }
         return categories;
     }
-
-    public LiveData<List<Category>> getCategories(){
-        if (limitedCategories == null)
-            limitedCategories = storiesRepository.getCategories();
-        return limitedCategories;
-    }
-
 }
