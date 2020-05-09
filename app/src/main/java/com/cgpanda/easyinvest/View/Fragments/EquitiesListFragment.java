@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.cgpanda.easyinvest.R;
 
-public class EquityFragment extends Fragment {
+public class EquitiesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
