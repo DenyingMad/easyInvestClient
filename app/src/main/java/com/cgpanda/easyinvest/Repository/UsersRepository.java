@@ -46,7 +46,7 @@ public class UsersRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (response.body() != null) {
+        if (response != null && response.body() != null) {
             return response.body();
         } else{
             return new ApiKey("default ApiKey");

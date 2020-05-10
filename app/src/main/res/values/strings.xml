@@ -25,5 +25,6 @@
     <string name="shared_pref_checkbox">com.cgpanda.easyinvest.check</string>
     <string name="shared_pref_email">com.cgpanda.easyinvest.email</string>
     <string name="shared_pref_password">com.cgpanda.easyinvest.password</string>
+    <string name="shared_pref_api_key">com.cgpanda.easyinvest.apikey</string>
 
 </resources>

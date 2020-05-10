@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.cgpanda.easyinvest.R;
 import com.cgpanda.easyinvest.Security;
@@ -66,6 +67,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        viewModel.getApiKey().observe(this, apiKey ->{
+            editor.putString(getString(R.string.shared_pref_api_key) + "_" + email.getText().toString(), apiKey);
+            editor.commit();
+        });
+
         registerButton.setOnClickListener(v -> {
             // Проверить корректность полей
             if (checkFields()) {
@@ -75,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         enterButton.setOnClickListener(v ->{
+            Toast.makeText(LoginActivity.this, preferences.getString(getString(R.string.shared_pref_api_key) + "_" + email.getText().toString(), "nothing"), Toast.LENGTH_SHORT).show();
             // Авторизация:
             // Отправить apiKey на сервер
             // Ждать ответ
@@ -139,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startUserRegistration(){
-        // TODO сохранение полей
         saveLoginPreferences();
         // Захешировать пароль
         // Запросить имя пользователя
@@ -151,8 +157,13 @@ public class LoginActivity extends AppCompatActivity {
             String hash = Security.generateHash(password.getText().toString());
             Log.d(TAG, "startUserRegistration: hash: " + hash);
             viewModel.sendCredentials(email.getText().toString(), hash);
+
             hash = null;
             System.gc();
+
+            // Сохраняем apiKey
+
+
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }

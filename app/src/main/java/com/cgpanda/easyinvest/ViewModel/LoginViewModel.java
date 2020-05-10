@@ -1,6 +1,8 @@
 package com.cgpanda.easyinvest.ViewModel;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -18,6 +20,7 @@ public class LoginViewModel extends ViewModel {
     private UsersRepository usersRepository = null;
     private MutableLiveData<Boolean> isExist = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private MutableLiveData<String> apiKeyString = new MutableLiveData<>();
 
     public void init(){
         if (usersRepository != null) {
@@ -34,6 +37,8 @@ public class LoginViewModel extends ViewModel {
     public LiveData<Boolean> checkEmail(){
         return isExist;
     }
+
+    public LiveData<String> getApiKey(){ return apiKeyString;}
 
     public void checkEmailIfExists(String email){
         Log.d(TAG, "checkEmailIfExists: Создать асинхронный таск");
@@ -59,8 +64,7 @@ public class LoginViewModel extends ViewModel {
         @Override
         protected void onPostExecute(ApiKey apiKey) {
             super.onPostExecute(apiKey);
-            // TODO сохранить apiKey в sharedPreferences
-            Log.d(TAG, "onPostExecute: Сохраняем apiKey: " + apiKey.getApiKey());
+            apiKeyString.postValue(apiKey.getApiKey());
             isLoading.postValue(false);
         }
 
