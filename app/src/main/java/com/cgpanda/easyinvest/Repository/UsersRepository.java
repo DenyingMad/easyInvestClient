@@ -2,12 +2,13 @@ package com.cgpanda.easyinvest.Repository;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.cgpanda.easyinvest.Entity.ApiKey;
+import com.cgpanda.easyinvest.Entity.UserCredentials;
 import com.cgpanda.easyinvest.WebServices.UsersApi;
 
 import java.io.IOException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -34,8 +35,21 @@ public class UsersRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
+    public ApiKey registerUser(UserCredentials credentials){
+        Call<ApiKey> apiKeyCall = usersApi.registerUser(credentials);
+        Response<ApiKey> response = null;
+        try {
+             response = apiKeyCall.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response != null) {
+            return response.body();
+        } else{
+            return new ApiKey("default ApiKey");
+        }
+    }
 }

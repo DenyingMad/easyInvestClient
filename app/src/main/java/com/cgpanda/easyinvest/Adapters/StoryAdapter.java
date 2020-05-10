@@ -41,7 +41,6 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //TODO сделать последнюю историю кнопкой больше на сервере
         RequestOptions options = new RequestOptions().placeholder(R.drawable.ic_launcher_foreground);
         Glide.with(context)
                 .load(storyList.get(position).getImageUrl())

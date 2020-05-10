@@ -12,11 +12,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_email">Введите e-mail</string>
     <string name="login_title">Вход/Регистрация</string>
-    <string name="enter_password">Придумайте пароль (не менее 6 символов)</string>
+    <string name="enter_password">Придумайте пароль (не менее 8 символов)</string>
     <string name="enter">Вход</string>
     <string name="registration">Регистрация</string>
     <string name="attention">Внимание</string>
     <string name="no_message">Без сообщения</string>
     <string name="cancel_btn">Ок</string>
     <string name="email_exist_message">Пользователь с такой почтой уже существует, используйте другой e-mail или авторизуйтесь.</string>
+    <string name="wrong_email_or_password">Введите корректный почтовый адрес и пароль длиной не менее 8 символов</string>
 </resources>

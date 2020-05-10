@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.cgpanda.easyinvest.R;
+import com.cgpanda.easyinvest.Security;
 import com.cgpanda.easyinvest.View.Fragments.AttentionDialogFragment;
 import com.cgpanda.easyinvest.ViewModel.LoginViewModel;
 
@@ -44,15 +45,17 @@ public class LoginActivity extends AppCompatActivity {
         viewModel.checkIsLoading().observe(this, this::setVisibilityProgressBar);
         viewModel.checkEmail().observe(this, aBoolean -> {
             if (aBoolean){
-                showErrorUserAlreadyExist();
+                showErrorUserAlreadyExist(R.string.email_exist_message);
             } else {
                 startUserRegistration();
             }
         });
         registerButton.setOnClickListener(v -> {
-            // Проверяем, существует ли пользователь с таким email
-            viewModel.checkEmailIfExists(email.getText().toString());
-
+            // Проверить корректность полей
+            if (checkFields()) {
+                // Если поля заполнены корректно, проверяем, существует ли пользователь с таким email
+                viewModel.checkEmailIfExists(email.getText().toString());
+            }
         });
 
         enterButton.setOnClickListener(v ->{
@@ -63,32 +66,32 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private Boolean checkFields() {
+        if (email.getText().toString().contains("@") && password.length() >= 8){
+            return true;
+        } else{
+            showErrorUserAlreadyExist(R.string.wrong_email_or_password);
+            return false;
+        }
+    }
+
     private void startUserRegistration(){
         // Захешировать пароль
         // Запросить имя пользователя
         // Отправить пост запрос на сервер
         // Получить apiKey
         // Авторизоваться
-
+        Security security = new Security();
         try {
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            byte[] salt = new byte[16];
-            random.nextBytes(salt);
-
-            PBEKeySpec spec = new PBEKeySpec(password.getText().toString().toCharArray(), salt, 32768, 64 * 8);
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] hash = factory.generateSecret(spec).getEncoded();
-
-            BigInteger bi = new BigInteger(1, hash);
-            String hex = bi.toString(16);
-            BigInteger bigInteger = new BigInteger(1, salt);
-            String saltString = bigInteger.toString(16);
-
-            Log.d(TAG, "startUserRegistration: hash: " + hex);
-            Log.d(TAG, "startUserRegistration: salt: " + saltString);
+            String hash = Security.generateHash(password.getText().toString());
+            Log.d(TAG, "startUserRegistration: hash: " + hash);
+            viewModel.sendCredentials(email.getText().toString(), hash);
+            hash = null;
+            System.gc();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -100,12 +103,8 @@ public class LoginActivity extends AppCompatActivity {
         progressLayout = findViewById(R.id.login_progress_bar_layout);
     }
 
-    private void continueRegistration(){
-
-    }
-
-    private void showErrorUserAlreadyExist(){
-        AttentionDialogFragment.newInstance(R.string.email_exist_message).show(getSupportFragmentManager(), "dialog");
+    private void showErrorUserAlreadyExist(int message){
+        AttentionDialogFragment.newInstance(message).show(getSupportFragmentManager(), "alert");
         Log.d(TAG, "showErrorUserAlreadyExist: show");
     }
 

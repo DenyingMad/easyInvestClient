@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cgpanda.easyinvest.Entity.ApiKey;
+import com.cgpanda.easyinvest.Entity.UserCredentials;
 import com.cgpanda.easyinvest.Repository.UsersRepository;
 
 public class LoginViewModel extends ViewModel {
@@ -38,6 +40,41 @@ public class LoginViewModel extends ViewModel {
         CheckEmail checkEmail = new CheckEmail();
         checkEmail.execute(email);
         Log.d(TAG, "checkEmailIfExists: Таск запущен");
+    }
+
+    public void sendCredentials(String email, String hash){
+        Log.d(TAG, "sendCredentials: Запускаем таск");
+        SendData registerNewUser = new SendData();
+        registerNewUser.execute(email, hash);
+        Log.d(TAG, "sendCredentials: Таск зпущен");
+    }
+
+    public class SendData extends AsyncTask<String, Void, ApiKey>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            isLoading.postValue(true);
+        }
+
+        @Override
+        protected void onPostExecute(ApiKey apiKey) {
+            super.onPostExecute(apiKey);
+            // TODO сохранить apiKey в sharedPreferences
+            Log.d(TAG, "onPostExecute: Сохраняем apiKey: " + apiKey.getApiKey());
+            isLoading.postValue(false);
+        }
+
+        @Override
+        protected ApiKey doInBackground(String... strings) {
+            Log.d(TAG, "doInBackground: Посылаем POST запрос на сервер");
+            // Создаем объект пользователя для передачи логина и пароля
+            UserCredentials user = new UserCredentials(strings[0], strings[1]);
+            // Отправляем данные на сервер и получаем apiKey
+            ApiKey apiKey = usersRepository.registerUser(user);
+            user = null;
+            System.gc();
+            return apiKey;
+        }
     }
 
     private class CheckEmail extends AsyncTask<String, Void, Boolean> {
