@@ -5,10 +5,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -30,19 +33,31 @@ import javax.crypto.spec.PBEKeySpec;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
     private Button enterButton, registerButton;
     private LinearLayout progressLayout;
     private EditText email, password;
     private LoginViewModel viewModel;
+    private CheckBox savePasswordCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         uiBinding();
+
+        preferences = getSharedPreferences("com.cgpanda.easyinvest", MODE_PRIVATE);
+        editor = preferences.edit();
+        checkSavedLoginPreferences();
+
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         viewModel.init();
+
         viewModel.checkIsLoading().observe(this, this::setVisibilityProgressBar);
+
         viewModel.checkEmail().observe(this, aBoolean -> {
             if (aBoolean){
                 showErrorUserAlreadyExist(R.string.email_exist_message);
@@ -50,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 startUserRegistration();
             }
         });
+
         registerButton.setOnClickListener(v -> {
             // Проверить корректность полей
             if (checkFields()) {
@@ -75,7 +91,56 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void checkSavedLoginPreferences(){
+        String checkbox = preferences.getString(getString(R.string.shared_pref_checkbox), "False");
+        String mail = preferences.getString(getString(R.string.shared_pref_email), "");
+        String password = preferences.getString(getString(R.string.shared_pref_password), "");
+
+        email.setText(mail);
+        this.password.setText(password);
+
+        if (checkbox.equals("True")){
+            savePasswordCheck.setChecked(true);
+        } else {
+            savePasswordCheck.setChecked(false);
+        }
+    }
+    private void saveLoginPreferences(){
+        // Если отмечено сохранение пароля, то добавляем в sharedPreferences значения полей, если галочка снята, то очищаем shared pref.
+        if (savePasswordCheck.isChecked()){
+            // set checkbox
+            editor.putString(getString(R.string.shared_pref_checkbox), "True");
+            editor.commit();
+
+            // set email
+            editor.putString(getString(R.string.shared_pref_email), email.getText().toString());
+            editor.commit();
+
+            // set the password
+            editor.putString(getString(R.string.shared_pref_password), password.getText().toString());
+            editor.commit();
+        } else {
+            editor.putString(getString(R.string.shared_pref_checkbox), "False");
+            editor.commit();
+
+            editor.putString(getString(R.string.shared_pref_email), "");
+            editor.commit();
+
+            editor.putString(getString(R.string.shared_pref_password), "");
+            editor.commit();
+        }
+
+    }
+
+    private Boolean authorization(){
+
+
+        return false;
+    }
+
     private void startUserRegistration(){
+        // TODO сохранение полей
+        saveLoginPreferences();
         // Захешировать пароль
         // Запросить имя пользователя
         // Отправить пост запрос на сервер
@@ -101,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.email_et);
         password = findViewById(R.id.password_et);
         progressLayout = findViewById(R.id.login_progress_bar_layout);
+        savePasswordCheck = findViewById(R.id.save_fields_cb);
     }
 
     private void showErrorUserAlreadyExist(int message){

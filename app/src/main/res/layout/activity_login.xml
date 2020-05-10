@@ -71,17 +71,25 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/email_et"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginBottom="20dp"
                     android:ems="10"
                     android:hint="@string/enter_password"
                     android:inputType="textPassword"
                     android:paddingVertical="20dp" />
 
+                <CheckBox
+                    android:id="@+id/save_fields_cb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/password_et"
+                    android:text="@string/save_login_field"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginStart="15dp"/>
+
                 <LinearLayout
                     android:id="@+id/reg_btns_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/password_et"
+                    android:layout_below="@id/save_fields_cb"
                     android:layout_marginBottom="50dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
@@ -91,14 +99,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingVertical="20dp"
+                        android:paddingVertical="15dp"
                         android:text="@string/enter" />
 
                     <Button
                         android:id="@+id/register_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="20dp"
+                        android:paddingVertical="15dp"
                         android:layout_weight="1"
                         android:text="@string/registration" />
                 </LinearLayout>
