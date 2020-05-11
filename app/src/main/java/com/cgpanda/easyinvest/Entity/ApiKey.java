@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ApiKey {
 
-    @SerializedName("api_key")
+    @SerializedName("apiKey")
     @Expose
     private String apiKey;
 

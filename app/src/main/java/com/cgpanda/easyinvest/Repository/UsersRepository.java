@@ -30,12 +30,17 @@ public class UsersRepository {
 
     public Boolean checkEmail(String email) {
         Call<Boolean> call = usersApi.checkEmail(email);
+        Response<Boolean> response = null;
         try {
-            call.execute();
+            response = call.execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        if (response != null && response.body() != null){
+            return response.body();
+        } else {
+            return true;
+        }
     }
 
     public ApiKey registerUser(UserCredentials credentials){

@@ -11,9 +11,9 @@ import retrofit2.http.Query;
 
 public interface UsersApi {
 
-    @GET("user/check-email")
+    @GET("login/check-email")
     Call<Boolean> checkEmail(@Query("email") String email);
 
-    @POST("user/register")
+    @POST("login/register")
     Call<ApiKey> registerUser(@Body UserCredentials userCredentials);
 }
