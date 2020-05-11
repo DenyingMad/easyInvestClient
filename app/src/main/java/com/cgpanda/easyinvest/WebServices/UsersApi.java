@@ -20,4 +20,7 @@ public interface UsersApi {
 
     @GET("login/sign-in")
     Call<ResponseBody> authUser(@Query("email") String email);
+
+    @GET("login/update-api-key")
+    Call<ResponseBody> updateApiKey(@Query("email") String email);
 }

@@ -22,11 +22,11 @@ public class LoginViewModel extends ViewModel {
 
     private static final String TAG = "LoginViewModel";
 
-    private UsersRepository usersRepository = null;
-    private MutableLiveData<Boolean> isExist = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private MutableLiveData<String> apiKeyString = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isAuthorized = new MutableLiveData<>();
+    private static UsersRepository usersRepository = null;
+    private static MutableLiveData<Boolean> isExist = new MutableLiveData<>();
+    private static MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private static MutableLiveData<String> apiKeyString = new MutableLiveData<>();
+    private static MutableLiveData<Boolean> isAuthorized = new MutableLiveData<>();
 
     public void init(){
         if (usersRepository != null) {
@@ -69,7 +69,40 @@ public class LoginViewModel extends ViewModel {
         auth.execute(email, password);
     }
 
-    private class Auth extends AsyncTask<String, Void, String>{
+    public static class UpdateApiKey extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            isLoading.postValue(true);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            apiKeyString.postValue(s);
+            isLoading.postValue(false);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String apiKey = null;
+
+            try {
+                apiKey = usersRepository.updateApiKey(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (apiKey != null) {
+                return apiKey;
+            } else {
+                return "nothing";
+            }
+        }
+    }
+
+    private static class Auth extends AsyncTask<String, Void, String>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -107,7 +140,7 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    private class SendData extends AsyncTask<String, Void, ApiKey>{
+    private static class SendData extends AsyncTask<String, Void, ApiKey>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -134,7 +167,7 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    private class CheckEmail extends AsyncTask<String, Void, Boolean> {
+    private static class CheckEmail extends AsyncTask<String, Void, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

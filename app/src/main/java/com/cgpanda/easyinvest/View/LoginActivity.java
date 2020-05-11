@@ -67,6 +67,12 @@ public class LoginActivity extends AppCompatActivity {
             if (isAuthorized) {
                 // Сохраняем поля ввода логина и пароля, если отмечена соответствующая галочка
                 saveLoginPreferences();
+                // Обновляем apiKey
+                LoginViewModel.UpdateApiKey updateApiKey = new LoginViewModel.UpdateApiKey();
+                updateApiKey.execute(email.getText().toString());
+                // Сохраняем email, под которым зашел пользователь в shared preferences для дальнейшего обращения к api key
+                editor.putString(getString(R.string.shared_pref_active_email), "");
+                editor.commit();
                 // Пользователь авторизирован, перейти к главному экрану
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -86,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
 
         enterButton.setOnClickListener(v ->{
             if (checkFields()) {
-
                 // Авторизация:
                 viewModel.authUser(email.getText().toString(), password.getText().toString());
             }

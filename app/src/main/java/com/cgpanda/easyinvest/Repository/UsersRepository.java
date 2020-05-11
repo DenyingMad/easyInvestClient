@@ -73,4 +73,21 @@ public class UsersRepository {
             return ".";
         }
     }
+
+    public String updateApiKey(String email) throws IOException {
+        Call<ResponseBody> call = usersApi.updateApiKey(email);
+        Response<ResponseBody> response = null;
+
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (response != null && response.body() != null){
+            return response.body().string();
+        } else {
+            return "nothing";
+        }
+    }
 }
