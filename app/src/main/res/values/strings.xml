@@ -17,9 +17,12 @@
     <string name="attention">Внимание</string>
     <string name="no_message">Без сообщения</string>
     <string name="cancel_btn">Ок</string>
-    <string name="email_exist_message">Пользователь с такой почтой уже существует, используйте другой e-mail или авторизуйтесь.</string>
-    <string name="wrong_email_or_password">Введите корректный почтовый адрес и пароль длиной не менее 8 символов</string>
     <string name="save_login_field">Запомнить пароль</string>
+
+    <!-- For dialogs -->
+    <string name="dialog_message_email_exist_message">Пользователь с такой почтой уже существует, используйте другой e-mail или авторизуйтесь.</string>
+    <string name="dialog_message_wrong_email_or_password">Введите корректный почтовый адрес и пароль длиной не менее 8 символов</string>
+    <string name="dialog_message_login_denied">Неверный логин или пароль</string>
 
     <!-- For Shared Preferences -->
     <string name="shared_pref_checkbox">com.cgpanda.easyinvest.check</string>

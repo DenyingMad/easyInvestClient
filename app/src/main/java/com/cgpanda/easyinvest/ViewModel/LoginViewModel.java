@@ -12,6 +12,11 @@ import androidx.lifecycle.ViewModel;
 import com.cgpanda.easyinvest.Entity.ApiKey;
 import com.cgpanda.easyinvest.Entity.UserCredentials;
 import com.cgpanda.easyinvest.Repository.UsersRepository;
+import com.cgpanda.easyinvest.Security;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 public class LoginViewModel extends ViewModel {
 
@@ -21,6 +26,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Boolean> isExist = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<String> apiKeyString = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isAuthorized = new MutableLiveData<>();
 
     public void init(){
         if (usersRepository != null) {
@@ -40,6 +46,10 @@ public class LoginViewModel extends ViewModel {
 
     public LiveData<String> getApiKey(){ return apiKeyString;}
 
+    public LiveData<Boolean> getIsAuthorized() {
+        return isAuthorized;
+    }
+
     public void checkEmailIfExists(String email){
         Log.d(TAG, "checkEmailIfExists: Создать асинхронный таск");
         CheckEmail checkEmail = new CheckEmail();
@@ -54,7 +64,50 @@ public class LoginViewModel extends ViewModel {
         Log.d(TAG, "sendCredentials: Таск зпущен");
     }
 
-    public class SendData extends AsyncTask<String, Void, ApiKey>{
+    public void authUser(String email, String password){
+        Auth auth = new Auth();
+        auth.execute(email, password);
+    }
+
+    private class Auth extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            isLoading.postValue(true);
+        }
+
+        @Override
+        protected void onPostExecute(String hash) {
+            super.onPostExecute(hash);
+            if (!hash.equals(".")) {
+                try {
+                    isAuthorized.postValue(Security.validatePassword(hash));
+                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                isAuthorized.postValue(false);
+            }
+            isLoading.postValue(false);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String hash = null;
+            try {
+                hash = usersRepository.authUser(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (hash.contains(":")) {
+                return hash + ":" + strings[1];
+            } else{
+                return ".";
+            }
+        }
+    }
+
+    private class SendData extends AsyncTask<String, Void, ApiKey>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

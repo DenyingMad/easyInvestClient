@@ -8,6 +8,7 @@ import com.cgpanda.easyinvest.WebServices.UsersApi;
 
 import java.io.IOException;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -55,6 +56,21 @@ public class UsersRepository {
             return response.body();
         } else{
             return new ApiKey("default ApiKey");
+        }
+    }
+
+    public String authUser(String email) throws IOException {
+        Call<ResponseBody> call = usersApi.authUser(email);
+        Response<ResponseBody> response = null;
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response != null && response.body() != null){
+            return response.body().string();
+        } else{
+            return ".";
         }
     }
 }

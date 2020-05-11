@@ -18,6 +18,24 @@ public class Security {
         return toHex(salt) + ":" + toHex(hash);
     }
 
+    public static boolean validatePassword(String storedString) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String[] parts = storedString.split(":");
+        byte[] salt = fromHex(parts[0]);
+        byte[] storedHash = fromHex(parts[1]);
+        String password = parts[2];
+
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), salt, 32768, storedHash.length * 8);
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] newHash = secretKeyFactory.generateSecret(pbeKeySpec).getEncoded();
+
+        int diff = storedHash.length ^ newHash.length;
+        for (int i =0; i < storedHash.length && i < newHash.length; i++){
+            diff |= storedHash[i] ^ newHash[i];
+        }
+
+        return diff == 0;
+    }
+
     private static byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
@@ -35,4 +53,13 @@ public class Security {
             return hex;
         }
     }
+
+    private static byte[] fromHex(String hex){
+        byte[] bytes = new byte[hex.length() / 2];
+        for (int i = 0; i < bytes.length; i++){
+            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        }
+        return bytes;
+    }
+
 }

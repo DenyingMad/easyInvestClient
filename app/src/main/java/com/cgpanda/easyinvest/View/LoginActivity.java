@@ -1,13 +1,11 @@
 package com.cgpanda.easyinvest.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,15 +19,8 @@ import com.cgpanda.easyinvest.Security;
 import com.cgpanda.easyinvest.View.Fragments.AttentionDialogFragment;
 import com.cgpanda.easyinvest.ViewModel.LoginViewModel;
 
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -61,15 +52,28 @@ public class LoginActivity extends AppCompatActivity {
 
         viewModel.checkEmail().observe(this, aBoolean -> {
             if (aBoolean){
-                showErrorUserAlreadyExist(R.string.email_exist_message);
+                showAttentionDialog(R.string.dialog_message_email_exist_message);
             } else {
-                startUserRegistration();
+                userRegistration();
             }
         });
 
         viewModel.getApiKey().observe(this, apiKey ->{
             editor.putString(getString(R.string.shared_pref_api_key) + "_" + email.getText().toString(), apiKey);
             editor.commit();
+        });
+
+        viewModel.getIsAuthorized().observe(this, isAuthorized -> {
+            if (isAuthorized) {
+                // Сохраняем поля ввода логина и пароля, если отмечена соответствующая галочка
+                saveLoginPreferences();
+                // Пользователь авторизирован, перейти к главному экрану
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                // Неверный логин или пароль
+                showAttentionDialog(R.string.dialog_message_login_denied);
+            }
         });
 
         registerButton.setOnClickListener(v -> {
@@ -81,19 +85,36 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         enterButton.setOnClickListener(v ->{
-            Toast.makeText(LoginActivity.this, preferences.getString(getString(R.string.shared_pref_api_key) + "_" + email.getText().toString(), "nothing"), Toast.LENGTH_SHORT).show();
-            // Авторизация:
-            // Отправить apiKey на сервер
-            // Ждать ответ
-            // Если ответ положительный, то показать приветсвие и перейти к главному окну
+            if (checkFields()) {
+
+                // Авторизация:
+                viewModel.authUser(email.getText().toString(), password.getText().toString());
+            }
         });
+    }
+    
+    private void userRegistration(){
+        // Сохраняем поля ввода логина и пароля, если отмечена соответствующая галочка
+        saveLoginPreferences();
+        try {
+            // Хешируем пароль
+            String hash = Security.generateHash(password.getText().toString());
+
+            // Отправляем данные пользователя на сервер
+            viewModel.sendCredentials(email.getText().toString(), hash);
+
+            hash = null;
+            System.gc();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
     }
 
     private Boolean checkFields() {
         if (email.getText().toString().contains("@") && password.length() >= 8){
             return true;
         } else{
-            showErrorUserAlreadyExist(R.string.wrong_email_or_password);
+            showAttentionDialog(R.string.dialog_message_wrong_email_or_password);
             return false;
         }
     }
@@ -112,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             savePasswordCheck.setChecked(false);
         }
     }
+
     private void saveLoginPreferences(){
         // Если отмечено сохранение пароля, то добавляем в sharedPreferences значения полей, если галочка снята, то очищаем shared pref.
         if (savePasswordCheck.isChecked()){
@@ -139,38 +161,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private Boolean authorization(){
-
-
-        return false;
-    }
-
-    private void startUserRegistration(){
-        saveLoginPreferences();
-        // Захешировать пароль
-        // Запросить имя пользователя
-        // Отправить пост запрос на сервер
-        // Получить apiKey
-        // Авторизоваться
-        Security security = new Security();
-        try {
-            String hash = Security.generateHash(password.getText().toString());
-            Log.d(TAG, "startUserRegistration: hash: " + hash);
-            viewModel.sendCredentials(email.getText().toString(), hash);
-
-            hash = null;
-            System.gc();
-
-            // Сохраняем apiKey
-
-
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
     private void uiBinding() {
         enterButton = findViewById(R.id.enter_button);
         registerButton = findViewById(R.id.register_button);
@@ -180,9 +170,8 @@ public class LoginActivity extends AppCompatActivity {
         savePasswordCheck = findViewById(R.id.save_fields_cb);
     }
 
-    private void showErrorUserAlreadyExist(int message){
+    private void showAttentionDialog(int message){
         AttentionDialogFragment.newInstance(message).show(getSupportFragmentManager(), "alert");
-        Log.d(TAG, "showErrorUserAlreadyExist: show");
     }
 
     private void setVisibilityProgressBar(Boolean isVisible){
@@ -192,7 +181,4 @@ public class LoginActivity extends AppCompatActivity {
             progressLayout.setVisibility(View.GONE);
         }
     }
-
-
-
 }
