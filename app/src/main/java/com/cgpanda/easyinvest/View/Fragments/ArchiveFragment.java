@@ -175,10 +175,10 @@ public class ArchiveFragment extends Fragment {
         recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                if (velocityY > 4000){
+                if (velocityY > 2800){
                     goToArchiveCV.setVisibility(View.GONE);
                     quoteLayout.setVisibility(View.GONE);
-                } else if (velocityY < -4000){
+                } else if (velocityY < -8000){
                     goToArchiveCV.setVisibility(View.VISIBLE);
                     quoteLayout.setVisibility(View.VISIBLE);
                 }

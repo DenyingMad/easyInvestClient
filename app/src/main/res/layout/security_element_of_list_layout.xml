@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    android:layout_marginHorizontal="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="15dp">
+        <TextView
+            android:id="@+id/securities_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Мос. Биржа"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/securities_short_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOEX"
+            android:textSize="16sp"
+            android:layout_below="@id/securities_name"/>
+        <TextView
+            android:id="@+id/securities_current_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="120Р."
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_alignParentEnd="true"/>
+        <TextView
+            android:id="@+id/securities_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+1.23% (+2.78Р.)"
+            android:textSize="16sp"
+            android:textColor="@color/accentGreen"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/securities_current_price"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

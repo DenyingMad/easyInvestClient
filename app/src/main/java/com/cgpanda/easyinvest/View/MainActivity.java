@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.cgpanda.easyinvest.View.Fragments.ArchiveFragment;
-import com.cgpanda.easyinvest.View.Fragments.EquitiesListFragment;
+import com.cgpanda.easyinvest.View.Fragments.PortfolioFragment;
 import com.cgpanda.easyinvest.View.Fragments.HomeFragment;
 import com.cgpanda.easyinvest.R;
 import com.cgpanda.easyinvest.View.Fragments.NewsFragment;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new NewsFragment();
                     break;
                 case R.id.equities:
-                    selectedFragment = new EquitiesListFragment();
+                    selectedFragment = new PortfolioFragment();
                     break;
                 case R.id.stories:
                     selectedFragment = new ArchiveFragment();

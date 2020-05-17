@@ -59,8 +59,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         viewModel.getApiKey().observe(this, apiKey ->{
-            editor.putString(getString(R.string.shared_pref_api_key) + "_" + email.getText().toString(), apiKey);
+            // Сохраняем email, под которым зашел пользователь в shared preferences для дальнейшего обращения к api key
+            editor.putString(getString(R.string.shared_pref_active_email), email.getText().toString());
             editor.commit();
+            editor.putString(getString(R.string.shared_pref_api_key) + "_" + getString(R.string.shared_pref_active_email), apiKey);
+            editor.commit();
+            Log.d(TAG, "onCreate: api: " + preferences.getString(getString(R.string.shared_pref_api_key) + "_" + getString(R.string.shared_pref_active_email), "null1"));
         });
 
         viewModel.getIsAuthorized().observe(this, isAuthorized -> {
@@ -70,9 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                 // Обновляем apiKey
                 LoginViewModel.UpdateApiKey updateApiKey = new LoginViewModel.UpdateApiKey();
                 updateApiKey.execute(email.getText().toString());
-                // Сохраняем email, под которым зашел пользователь в shared preferences для дальнейшего обращения к api key
-                editor.putString(getString(R.string.shared_pref_active_email), "");
-                editor.commit();
                 // Пользователь авторизирован, перейти к главному экрану
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

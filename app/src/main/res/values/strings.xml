@@ -8,10 +8,14 @@
         <item>От старых к новым</item>
     </string-array>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Retrofit -->
+    <string name="base_url">https://protected-cliffs-60934.herokuapp.com/</string>
+
+
+    <!-- For login -->
     <string name="enter_email">Введите e-mail</string>
     <string name="login_title">Вход/Регистрация</string>
-    <string name="enter_password">Придумайте пароль (не менее 8 символов)</string>
+    <string name="enter_password">Введите пароль (не менее 8 символов)</string>
     <string name="enter">Вход</string>
     <string name="registration">Регистрация</string>
     <string name="attention">Внимание</string>
@@ -30,5 +34,11 @@
     <string name="shared_pref_password">com.cgpanda.easyinvest.password</string>
     <string name="shared_pref_api_key">com.cgpanda.easyinvest.apikey</string>
     <string name="shared_pref_active_email">com.cgpanda.easyinvest.active.email</string>
+
+
+    <!-- For portfolio screen -->
+    <string name="empty_portfolio_message">У вас еще ничего нет.\nСоберите ваш первый инвестиционный портфель сейчас:</string>
+    <string name="pick_new_portfolio">Собрать портфель</string>
+    <string name="portfolio_title">Ваш портфель</string>
 
 </resources>
