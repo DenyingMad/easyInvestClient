@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 
 public interface PortfolioApi {
-    @GET("user/securities/portfolio")
+    @GET("user/securities/portfolio/")
     Call<UserPortfolio> getUserPortfolio(@Header("api_key") String api_key);
 }

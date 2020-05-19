@@ -1,4 +1,4 @@
-package com.cgpanda.easyinvest.View.Fragments;
+package com.cgpanda.easyinvest.View.Fragments.portfolio;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,13 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
 
 import com.cgpanda.easyinvest.Adapters.PortfolioPageAdapter;
 import com.cgpanda.easyinvest.R;
@@ -64,15 +62,20 @@ public class PortfolioFragment extends Fragment {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::showLoading);
 
         viewModel.getUserPortfolio().observe(getViewLifecycleOwner(), userPortfolio -> {
-            if (!(userPortfolio.getId() == -1)){
+            if (userPortfolio.getId() == -1){
                 emptyPortfolioLayout.setVisibility(View.VISIBLE);
             } else{
                 portfolioLayout.setVisibility(View.VISIBLE);
+                setUpPortfolio();
             }
         });
 
+
+    }
+
+    private void setUpPortfolio(){
         portfolioPageAdapter = new PortfolioPageAdapter(getFragmentManager());
-        viewPager = view.findViewById(R.id.portfolio_tabs_container_vp);
+        viewPager = getActivity().findViewById(R.id.portfolio_tabs_container_vp);
 
         PortfolioPageAdapter adapter = new PortfolioPageAdapter(getFragmentManager());
         adapter.addFragment(new PortfolioActivesFragment(), "Все активы");
@@ -83,7 +86,7 @@ public class PortfolioFragment extends Fragment {
 
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = view.findViewById(R.id.portfolio_tabs);
+        TabLayout tabLayout = getActivity().findViewById(R.id.portfolio_tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }

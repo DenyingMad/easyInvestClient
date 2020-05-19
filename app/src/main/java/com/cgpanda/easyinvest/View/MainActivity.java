@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.cgpanda.easyinvest.View.Fragments.ArchiveFragment;
-import com.cgpanda.easyinvest.View.Fragments.PortfolioFragment;
+import com.cgpanda.easyinvest.View.Fragments.portfolio.PortfolioFragment;
 import com.cgpanda.easyinvest.View.Fragments.HomeFragment;
 import com.cgpanda.easyinvest.R;
 import com.cgpanda.easyinvest.View.Fragments.NewsFragment;

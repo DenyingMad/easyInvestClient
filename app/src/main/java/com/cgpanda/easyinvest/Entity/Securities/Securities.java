@@ -1,49 +1,44 @@
 package com.cgpanda.easyinvest.Entity.Securities;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Securities {
-    public String name;
-    public String shortName;
-    public double currentPrice;
-    public double lastPrice;
-    public InstrumentTypes instrumentType;
 
-    public Securities(String name, String shortName, double currentPrice, double lastPrice, InstrumentTypes instrumentType) {
-        this.name = name;
-        this.shortName = shortName;
-        this.currentPrice = currentPrice;
-        this.lastPrice = lastPrice;
-        this.instrumentType = instrumentType;
+    @SerializedName("secid")
+    @Expose
+    private String secid;
+
+    @SerializedName("boardid")
+    @Expose
+    private String boardId;
+
+    @SerializedName("market")
+    @Expose
+    private String market;
+
+
+    public String getSecid() {
+        return secid;
     }
 
-    public String getName() {
-        return name;
+    public void setSecid(String secid) {
+        this.secid = secid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getBoardId() {
+        return boardId;
     }
 
-    public String getShortName() {
-        return shortName;
+    public void setBoardId(String boardId) {
+        this.boardId = boardId;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public String getMarket() {
+        return market;
     }
 
-    public double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public double getLastPrice() {
-        return lastPrice;
-    }
-
-    public void setLastPrice(double lastPrice) {
-        this.lastPrice = lastPrice;
+    public void setMarket(String market) {
+        this.market = market;
     }
 }

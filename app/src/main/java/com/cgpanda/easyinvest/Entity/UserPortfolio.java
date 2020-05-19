@@ -1,14 +1,14 @@
 package com.cgpanda.easyinvest.Entity;
 
+import com.cgpanda.easyinvest.Entity.Securities.PortfolioSecurities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class UserPortfolio {
 
-    public UserPortfolio(){}
-
-    // Конструктор для пустого портфеля
-    public UserPortfolio(long id){
+    public UserPortfolio(long id) {
         this.id = id;
     }
 
@@ -16,17 +16,9 @@ public class UserPortfolio {
     @Expose
     private long id;
 
-    @SerializedName("currentPrice")
+    @SerializedName("securitiesPortfolioSet")
     @Expose
-    private double currentPrice;
-
-    public double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
+    private List<PortfolioSecurities> portfolioSecuritiesList;
 
     public long getId() {
         return id;
@@ -34,5 +26,13 @@ public class UserPortfolio {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public List<PortfolioSecurities> getPortfolioSecuritiesList() {
+        return portfolioSecuritiesList;
+    }
+
+    public void setPortfolioSecuritiesList(List<PortfolioSecurities> portfolioSecuritiesList) {
+        this.portfolioSecuritiesList = portfolioSecuritiesList;
     }
 }

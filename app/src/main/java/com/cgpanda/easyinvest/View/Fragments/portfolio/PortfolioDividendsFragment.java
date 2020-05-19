@@ -1,4 +1,4 @@
-package com.cgpanda.easyinvest.View.Fragments;
+package com.cgpanda.easyinvest.View.Fragments.portfolio;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

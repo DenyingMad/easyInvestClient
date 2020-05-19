@@ -40,5 +40,6 @@
     <string name="empty_portfolio_message">У вас еще ничего нет.\nСоберите ваш первый инвестиционный портфель сейчас:</string>
     <string name="pick_new_portfolio">Собрать портфель</string>
     <string name="portfolio_title">Ваш портфель</string>
+    <string name="amount">%d шт.</string>
 
 </resources>

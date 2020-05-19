@@ -12,19 +12,21 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="15dp">
         <TextView
-            android:id="@+id/securities_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Мос. Биржа"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
-        <TextView
             android:id="@+id/securities_short_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MOEX"
+            android:text="Мос. БиржаМос."
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+        <TextView
+            android:id="@+id/securities_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 шт."
             android:textSize="16sp"
-            android:layout_below="@id/securities_name"/>
+            android:layout_below="@id/securities_short_name" />
         <TextView
             android:id="@+id/securities_current_price"
             android:layout_width="wrap_content"
