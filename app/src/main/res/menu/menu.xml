@@ -9,12 +9,16 @@
         android:icon="@drawable/ic_public_black_24dp"
         android:title="News"/>
     <item
-        android:id="@+id/equities"
+        android:id="@+id/portfolio"
+        android:icon="@drawable/ic_pie_chart_black_24dp"
+        android:title="Portfolio"/>
+    <item
+        android:id="@+id/securities"
         android:icon="@drawable/ic_insert_chart_black_24dp"
-        android:title="Equities"/>
+        android:title="Securities"/>
     <item
         android:id="@+id/stories"
         android:icon="@drawable/ic_history_black_24dp"
-        android:title="Stories"/>
+        android:title="Blog"/>
 
 </menu>

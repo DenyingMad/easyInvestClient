@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.cgpanda.easyinvest.Entity.News;
 import com.cgpanda.easyinvest.WebServices.NewsApi;
+import com.cgpanda.easyinvest.WebServices.RetrofitService;
 
 import java.util.List;
 
@@ -15,11 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewsRepository {
     private static NewsRepository instance;
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://protected-cliffs-60934.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private NewsApi newsApi = retrofit.create(NewsApi.class);
+    private NewsApi newsApi = RetrofitService.cteateService(NewsApi.class);
 
 
     public static NewsRepository getInstance(){

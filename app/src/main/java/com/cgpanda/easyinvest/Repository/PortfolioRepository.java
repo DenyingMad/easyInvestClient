@@ -2,15 +2,15 @@ package com.cgpanda.easyinvest.Repository;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
+import com.cgpanda.easyinvest.Entity.PortfolioSecurities.Securities;
 import com.cgpanda.easyinvest.Entity.UserPortfolio;
 import com.cgpanda.easyinvest.WebServices.PortfolioApi;
+import com.cgpanda.easyinvest.WebServices.RetrofitService;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,11 +21,12 @@ public class PortfolioRepository {
 
     private static PortfolioRepository instance;
 
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://protected-cliffs-60934.herokuapp.com/")
+    private Retrofit iss_retrofit = new Retrofit.Builder()
+            .baseUrl("https://iss.moex.com/iss/engines/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    private PortfolioApi portfolioApi = retrofit.create(PortfolioApi.class);
+    private PortfolioApi portfolioApi = RetrofitService.cteateService(PortfolioApi.class);
+    private PortfolioApi issApi = iss_retrofit.create(PortfolioApi.class);
 
     public static PortfolioRepository getInstance(){
         if (instance == null){
@@ -48,9 +49,25 @@ public class PortfolioRepository {
             Log.d(TAG, "onResponse: Портфолио пользователя получено");
             return response.body();
         } else{
-            // TODO Вывод сообщения о том, что портфель пуст
             Log.d(TAG, "onResponse: Портфолио является пустым");
             return new UserPortfolio(-1);
+        }
+    }
+
+    public Securities getSecurities(String market, String boardid, String secid) {
+        Call<List<Securities>> call = issApi.getSecurities("stock", market, boardid, secid);
+        Response<List<Securities>> response = null;
+
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (response != null && response.isSuccessful()){
+            return response.body().get(1);
+        } else {
+            return new Securities();
         }
     }
 }

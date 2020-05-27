@@ -41,5 +41,7 @@
     <string name="pick_new_portfolio">Собрать портфель</string>
     <string name="portfolio_title">Ваш портфель</string>
     <string name="amount">%d шт.</string>
+    <string name="portfolio_full_price">Общая стоимость:</string>
+    <string name="portfolio_full_change">Изменение:</string>
 
 </resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".View.Fragments.SecuritiesFragment">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/equities_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Котировки"
+                android:textSize="26sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:letterSpacing="0.15"
+                android:layout_centerHorizontal="true"/>
+
+            <SearchView
+                android:id="@+id/securities_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/equities_title"
+                android:layout_marginHorizontal="20dp"
+                android:background="#FBFBFB"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/securities_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/securities_search"/>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/securities_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_below="@id/securities_tabs"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

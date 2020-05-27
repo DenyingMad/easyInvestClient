@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp">
+
+    <RelativeLayout
+        android:id="@+id/common_stock_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp">
+        <LinearLayout
+            android:id="@+id/common_stock_name_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/common_stock_short_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Short Name"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/common_stock_secid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="secid"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/common_stock_values_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toStartOf="@id/c_stock_change_arrow"
+            android:gravity="end"
+            android:layout_marginEnd="10dp">
+            <TextView
+                android:id="@+id/common_stock_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18934.5Р."
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/common_stock_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1.4% (+12Р)"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/c_stock_change_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/up_arrow"
+            android:textColor="@color/accentRed"
+            android:textSize="30sp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.cgpanda.easyinvest.Adapters;
+package com.cgpanda.easyinvest.Adapters.StockQuotes;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PortfolioPageAdapter extends FragmentPagerAdapter {
+public class SecuritiesPageAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
@@ -19,7 +19,7 @@ public class PortfolioPageAdapter extends FragmentPagerAdapter {
         titleList.add(title);
     }
 
-    public PortfolioPageAdapter(@NonNull FragmentManager fm) {
+    public SecuritiesPageAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 

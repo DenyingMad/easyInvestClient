@@ -1,6 +1,6 @@
 package com.cgpanda.easyinvest.Entity;
 
-import com.cgpanda.easyinvest.Entity.Securities.PortfolioSecurities;
+import com.cgpanda.easyinvest.Entity.PortfolioSecurities.PortfolioSecurities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

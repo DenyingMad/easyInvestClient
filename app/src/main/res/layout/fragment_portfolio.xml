@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:baselineAligned="false"
         android:visibility="gone">
 
         <TextView
@@ -41,13 +42,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginVertical="20dp"
+                    android:layout_marginVertical="10dp"
                     android:layout_marginHorizontal="10dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:layout_weight="1"
+                        android:layout_weight="1.2"
                         android:layout_marginEnd="5dp"
                         android:gravity="center">
                         <TextView
@@ -55,38 +56,33 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Общая стоимость:"
+                            android:text="@string/portfolio_full_price"
                             />
                         <TextView
-                            android:id="@+id/full_price"
+                            android:id="@+id/portfolio_full_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="180536,93Р."
-                            android:textSize="24sp"
-                            android:layout_below="@id/full_price_title"/>
+                            android:textSize="24sp"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:layout_weight="1.3"
+                        android:layout_weight="1"
                         android:layout_marginStart="5dp"
                         android:gravity="center">
                         <TextView
                             android:id="@+id/change_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Изменение:"
-                            android:textSize="16sp"
-                            android:layout_below="@id/full_price"/>
+                            android:text="@string/portfolio_full_change"
+                            android:textSize="16sp"/>
                         <TextView
-                            android:id="@+id/change"
+                            android:id="@+id/portfolio_change"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+25% (+1928Р.)"
-                            android:textSize="20sp"
-                            android:layout_below="@id/change_title"/>
+                            android:textSize="20sp"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -95,18 +91,18 @@
             </androidx.cardview.widget.CardView>
             <ImageView
                 android:id="@+id/chart"
-                android:layout_width="220dp"
-                android:layout_height="220dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
                 android:src="@drawable/pie_chart"
                 android:scaleType="centerCrop"
-                android:layout_marginVertical="30dp"
+                android:layout_marginVertical="20dp"
                 android:background="#E4E4E4"/>
         </LinearLayout>
 
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
@@ -124,7 +120,7 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     android:layout_below="@id/portfolio_tabs"/>
             </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
     </LinearLayout>
 

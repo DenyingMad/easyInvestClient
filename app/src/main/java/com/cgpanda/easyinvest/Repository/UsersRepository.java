@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.cgpanda.easyinvest.Entity.ApiKey;
 import com.cgpanda.easyinvest.Entity.UserCredentials;
+import com.cgpanda.easyinvest.WebServices.RetrofitService;
 import com.cgpanda.easyinvest.WebServices.UsersApi;
 
 import java.io.IOException;
@@ -17,11 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UsersRepository {
 
     private static UsersRepository instance;
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://protected-cliffs-60934.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private UsersApi usersApi = retrofit.create(UsersApi.class);
+    private UsersApi usersApi = RetrofitService.cteateService(UsersApi.class);
 
     public static UsersRepository getInstance(){
         if (instance == null)

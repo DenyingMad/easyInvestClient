@@ -16,10 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.cgpanda.easyinvest.Adapters.PortfolioActivesAdapter;
-import com.cgpanda.easyinvest.Entity.Securities.InstrumentTypes;
-import com.cgpanda.easyinvest.Entity.Securities.PortfolioSecurities;
-import com.cgpanda.easyinvest.Entity.Securities.Securities;
+import com.cgpanda.easyinvest.Adapters.Portfolio.PortfolioActivesAdapter;
+import com.cgpanda.easyinvest.Entity.PortfolioSecurities.PortfolioSecurities;
 import com.cgpanda.easyinvest.R;
 import com.cgpanda.easyinvest.ViewModel.PortfolioViewModel;
 
@@ -78,9 +76,9 @@ public class PortfolioActivesFragment extends Fragment {
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
                 int pos = parent.getChildAdapterPosition(view);
-                outRect.bottom = 40;
+                outRect.bottom = 20;
                 if (pos == 0){
-                    outRect.top = 40;
+                    outRect.top = 20;
                 }
             }
         });

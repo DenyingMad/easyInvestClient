@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.cgpanda.easyinvest.Entity.Equity;
 import com.cgpanda.easyinvest.WebServices.EquitiesApi;
+import com.cgpanda.easyinvest.WebServices.RetrofitService;
 
 import java.util.List;
 
@@ -20,11 +21,7 @@ public class EquityRepository {
     private static final String TAG = "EquityRepository";
 
     private static EquityRepository instance;
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://protected-cliffs-60934.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private EquitiesApi api = retrofit.create(EquitiesApi.class);
+    private EquitiesApi api = RetrofitService.cteateService(EquitiesApi.class);
 
     public static EquityRepository getInstance (){
         if (instance == null)

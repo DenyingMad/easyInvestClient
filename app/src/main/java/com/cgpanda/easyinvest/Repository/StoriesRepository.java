@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.cgpanda.easyinvest.Entity.Category;
 import com.cgpanda.easyinvest.Entity.Episode;
 import com.cgpanda.easyinvest.Entity.Story;
+import com.cgpanda.easyinvest.WebServices.RetrofitService;
 import com.cgpanda.easyinvest.WebServices.StoriesApi;
 
 import java.util.ArrayList;
@@ -23,11 +24,7 @@ public class StoriesRepository {
     private static StoriesRepository instance;
     private ArrayList<Episode> episodeList = new ArrayList<>();
     private static final String TAG = "StoriesRepository";
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://protected-cliffs-60934.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private StoriesApi storiesApi = retrofit.create(StoriesApi.class);
+    private StoriesApi storiesApi = RetrofitService.cteateService(StoriesApi.class);
 
     public static StoriesRepository getInstance(){
         if(instance == null)

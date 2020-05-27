@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cgpanda.easyinvest.Entity.Equity;
 import com.cgpanda.easyinvest.R;
-import com.cgpanda.easyinvest.View.EquityActivity;
+import com.cgpanda.easyinvest.View.CommonStockActivity;
 
 import java.util.List;
 
@@ -88,10 +88,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder
 
 
 
-            itemView.setOnClickListener((view) -> {
-                Intent intent = new Intent(context, EquityActivity.class);
-                context.startActivity(intent);
-            });
+//            itemView.setOnClickListener((view) -> {
+//                Intent intent = new Intent(context, CommonStockActivity.class);
+//                context.startActivity(intent);
+//            });
 
         }
 

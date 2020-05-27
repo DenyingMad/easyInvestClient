@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.EquityActivity" />
+        <activity android:name=".View.CommonStockActivity" />
         <activity android:name=".View.ArchiveActivity" />
         <activity android:name=".View.EpisodeActivity" />
         <activity android:name=".View.MainActivity">

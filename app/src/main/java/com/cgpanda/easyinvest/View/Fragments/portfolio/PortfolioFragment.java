@@ -15,12 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.cgpanda.easyinvest.Adapters.PortfolioPageAdapter;
+import com.cgpanda.easyinvest.Adapters.Portfolio.PortfolioPageAdapter;
+import com.cgpanda.easyinvest.Entity.PortfolioSecurities.PortfolioSecurities;
 import com.cgpanda.easyinvest.R;
 import com.cgpanda.easyinvest.ViewModel.PortfolioViewModel;
 import com.google.android.material.tabs.TabLayout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 import java.util.Objects;
 
 public class PortfolioFragment extends Fragment {
@@ -34,6 +39,7 @@ public class PortfolioFragment extends Fragment {
     private LinearLayout emptyPortfolioLayout;
     private LinearLayout portfolioLayout;
     private ViewPager viewPager;
+    private Boolean firstSetUp = true;
 
     private PortfolioPageAdapter portfolioPageAdapter;
 
@@ -62,15 +68,17 @@ public class PortfolioFragment extends Fragment {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::showLoading);
 
         viewModel.getUserPortfolio().observe(getViewLifecycleOwner(), userPortfolio -> {
-            if (userPortfolio.getId() == -1){
+            if (userPortfolio.getId() == -1 || userPortfolio.getPortfolioSecuritiesList() == null){
                 emptyPortfolioLayout.setVisibility(View.VISIBLE);
             } else{
+                if (firstSetUp) {
+                    setUpPortfolio();
+                }
                 portfolioLayout.setVisibility(View.VISIBLE);
-                setUpPortfolio();
+                countPortfolioPrice(userPortfolio.getPortfolioSecuritiesList());
+                firstSetUp = false;
             }
         });
-
-
     }
 
     private void setUpPortfolio(){
@@ -89,6 +97,47 @@ public class PortfolioFragment extends Fragment {
         TabLayout tabLayout = getActivity().findViewById(R.id.portfolio_tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+    }
+
+    private void countPortfolioPrice(List<PortfolioSecurities> portfolioSecuritiesList){
+        TextView totalPriceTv = getActivity().findViewById(R.id.portfolio_full_price);
+        TextView totalChangeTv = getActivity().findViewById(R.id.portfolio_change);
+        BigDecimal currentTotalPrice = new BigDecimal("0");
+        BigDecimal lastTotalPrice = new BigDecimal("0");
+        BigDecimal changePercent;
+        BigDecimal changeValue;
+
+        for (PortfolioSecurities portfolioSecurities : portfolioSecuritiesList){
+            currentTotalPrice = currentTotalPrice.add(portfolioSecurities.getSecurities().getPortfolioSecuritiesMarketData().get(0).getLast().multiply(BigDecimal.valueOf(portfolioSecurities.getAmount())));
+            lastTotalPrice = lastTotalPrice.add(portfolioSecurities.getSecurities().getPortfolioSecuritiesStaticData().get(0).getPrevPrice().multiply(BigDecimal.valueOf(portfolioSecurities.getAmount())));
+        }
+
+        String totalPrice = currentTotalPrice.stripTrailingZeros().toPlainString() + "₽";
+
+        changeValue = currentTotalPrice.subtract(lastTotalPrice);
+        changePercent = currentTotalPrice.divide(lastTotalPrice, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).subtract(BigDecimal.valueOf(100));
+
+        String totalChange = changePercent.stripTrailingZeros().toPlainString() + "% (" + changeValue.stripTrailingZeros().toPlainString() + "₽)";
+
+        switch (currentTotalPrice.subtract(lastTotalPrice).signum()){
+            case -1:
+                // negative
+                totalChangeTv.setTextColor(getResources().getColor(R.color.accentRed));
+                break;
+            case 0:
+                // neural
+                totalChangeTv.setTextColor(getResources().getColor(R.color.neutral));
+                break;
+            case 1:
+                //positive
+                totalChange = "+" + changePercent.stripTrailingZeros().toPlainString() + "% (+" + changeValue.stripTrailingZeros().toPlainString() + "₽)";
+                totalChangeTv.setTextColor(getResources().getColor(R.color.accentGreen));
+                break;
+            default:
+                break;
+        }
+        totalPriceTv.setText(totalPrice);
+        totalChangeTv.setText(totalChange);
     }
 
     private void showLoading(boolean isLoading){

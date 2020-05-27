@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.cgpanda.easyinvest.Entity.Article;
 import com.cgpanda.easyinvest.Entity.Quote;
 import com.cgpanda.easyinvest.WebServices.BlogApi;
+import com.cgpanda.easyinvest.WebServices.RetrofitService;
 
 import java.util.List;
 
@@ -18,11 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BlogRepository {
     private static BlogRepository instance;
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://protected-cliffs-60934.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    private BlogApi blogApi = retrofit.create(BlogApi.class);
+    private BlogApi blogApi = RetrofitService.cteateService(BlogApi.class);
     private Boolean isLoaded = false;
     private Boolean isEndOfList = false;
 
